@@ -4,20 +4,20 @@
     path: /Library/Developer/CommandLineTools/usr/bin/clang
   register: xcode_clt_clang
 
-- name: Print xcode_clt_clang
-  debug:
-    var: xcode_clt_clang
+#- name: Print xcode_clt_clang
+#  debug:
+#    var: xcode_clt_clang
 
-- name: Find XCode Command Line Tools installation packages
-  shell: |
-    softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//'
-  register: xcode_clt_packages
-  when: not xcode_clt_clang.stat.exists
-  changed_when: false
+#- name: Find XCode Command Line Tools installation packages
+#  shell: |
+#    softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//'
+#  register: xcode_clt_packages
+#  when: not xcode_clt_clang.stat.exists
+#  changed_when: false
 
-- name: Print xcode_clt_packages
-  debug:
-    var: xcode_clt_packages
+#- name: Print xcode_clt_packages
+#  debug:
+#    var: xcode_clt_packages
 
 - name: Find XCode Command Line Tools installation package
   shell: |
@@ -26,9 +26,9 @@
   when: not xcode_clt_clang.stat.exists
   changed_when: false
 
-- name: Print xcode_clt_package
-  debug:
-    var: xcode_clt_package
+#- name: Print xcode_clt_package
+#  debug:
+#    var: xcode_clt_package
 
 - name: Create Xcode Command Line Tools progress placeholder file
   become: yes
@@ -43,9 +43,9 @@
   register: xcode_clt_installation
   when: xcode_clt_package is not skipped
 
-- name: Print xcode_clt_package results
-  debug:
-    var: xcode_clt_installation
+#- name: Print xcode_clt_package results
+#  debug:
+#    var: xcode_clt_installation
 
 - name: Delete Xcode Command Line Tools progress placeholder file
   become: yes
