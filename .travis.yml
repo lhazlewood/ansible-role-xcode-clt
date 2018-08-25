@@ -23,7 +23,7 @@ before_install:
   # remove XCode
   - xcode_dir="$(ls /Applications | grep '^Xcode')"
   - echo "xcode_dir is $xcode_dir"
-  - sudo rm -rf "/Applications/$xcode_dir"
+  - if [[ -d "$xcode_dir" ]]; then sudo rm -rf "/Applications/$xcode_dir"; fi
   - xcodeclt_path="$(xcode-select --print-path || true)"
   - echo "Xcode CLT path is $xcodeclt_path"
   - if [[ -d "$xcodeclt_path" ]]; then sudo rm -rf "$xcodeclt_path"; fi
