@@ -20,6 +20,7 @@ matrix:
 # any existing XCode or Comamnd Line Tools Travis has on the box by default:
 before_install:
   - if [[ -x /Developer/Library/uninstall-devtools ]]; then sudo /Developer/Library/uninstall-devtools --mode=all; fi
+  - if [[ -d /Library/Developer/CommandLineTools ]]; then sudo rm -rf /Library/Developer/CommandLineTools; fi;
   # remove XCode
   #- reldirs="$(ls /Applications | grep '^Xcode')"
   #- |
