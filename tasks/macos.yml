@@ -1,9 +1,39 @@
 ---
-- name: echo 'hello world'
-  command: echo "Hello World!"
-  register: result
-  changed_when: false
+- name: Check if Xcode Command Line Tools directory exists
+  command: xcode-select --print-path
+  register: xcode_clt_dir
+  ignore_errors: true
+
+- name: Check Xcode Command Line Tools installation assets
+  shell: "[ -n \"{{ xcode_clt_dir.stdout }}\" ] && [ -f \"{{ xcode_clt_dir.stdout }}/usr/bin/git\" ] && [ -f \"/usr/include/iconv.h\" ]"
+  register: xcode_clt_installed
+  ignore_errors: true
+  when: xcode_clt_dir.stdout != ""
+
+- name: Finding XCode Command Line Tools installation package
+  shell: softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | head -n1
+  register: xcode_clt_package
+  when: xcode_clt_installed is undefined
 
 - name: print message
   debug:
-    msg: "{{ result.stdout_lines }}"
+   msg: "{{ xcode_clt_package.stdout_lines }}"
+  when: xcode_clt_installed is undefined
+
+- name: Creating Xcode Command Line Tools progress placeholder file
+  become: yes
+  file:
+    path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+    state: touch
+  when: xcode_clt_installed is undefined
+
+- name: Delete Xcode Command Line Tools progress placeholder file
+  become: yes
+  file:
+    path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+    state: touch
+  when: xcode_clt_installed is undefined
+
+#- name: print message
+#  debug:
+#    msg: "{{ result.stdout_lines }}"
