@@ -4,6 +4,16 @@
 
 Ansible role that installs Xcode Command Line Tools on Mac OS X >= 10.10 (Yosemite, El Capitan, Sierra, High Sierra, etc).
 
+This role can be used in any playbook:
+
+* regardless if Xcode is already installed or not
+* regardless if the target host operating system is Mac or not.  It will only actually execute if the host OS is Mac, i.e. 
+    
+    `when: ansible_os_family == 'Darwin'`
+
+
+There are no variables or configuration settings at all.
+
 ## Example Playbook
 
 ```yaml
@@ -12,3 +22,6 @@ Ansible role that installs Xcode Command Line Tools on Mac OS X >= 10.10 (Yosemi
     - lhazlewood.xcode-clt
 ```
 
+## License
+
+MIT / BSD
