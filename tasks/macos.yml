@@ -1,30 +1,29 @@
 ---
-- name: Check if Xcode Command Line Tools directory exists
-  command: xcode-select --print-path
-  register: xcode_clt_dir
-  ignore_errors: true
-  changed_when: false
+- name: Check if Xcode Command Line Tools are installed
+  stat:
+    path: /Library/Developer/CommandLineTools/usr/bin/clang
+  register: xcode_clt_clang
 
-- name: Print xcode_clt_dir
+- name: Print xcode_clt_clang
   debug:
-    var: xcode_clt_dir
+    var: xcode_clt_clang
 
-- name: Check Xcode Command Line Tools installation assets
-  shell: |
-    [ -z "{{ xcode_clt_dir.stdout }}" ] || ! [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] || ! [ -f "/usr/include/iconv.h" ]
-  register: xcode_clt_missing
-  ignore_errors: true
-  changed_when: false
+#- name: Check Xcode Command Line Tools installation assets
+#  shell: |
+#    [ -z "{{ xcode_clt_dir.stdout }}" ] || ! [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] || ! [ -f "/usr/include/iconv.h" ]
+#  register: xcode_clt_missing
+#  ignore_errors: true
+#  changed_when: false
 
-- name: Print xcode_clt_missing
-  debug:
-    var: xcode_clt_missing
+#- name: Print xcode_clt_missing
+#  debug:
+#    var: xcode_clt_missing
 
 - name: Find XCode Command Line Tools installation package
   shell: |
     softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | tail -n1
   register: xcode_clt_package
-  when: xcode_clt_missing is succeeded
+  when: not xcode_clt_clang.stat.exists
   changed_when: false
 
 - name: Print xcode_clt_package

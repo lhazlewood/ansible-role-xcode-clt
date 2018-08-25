@@ -21,18 +21,18 @@ matrix:
 before_install:
   - if [[ -x /Developer/Library/uninstall-devtools ]]; then sudo /Developer/Library/uninstall-devtools --mode=all; fi
   # remove XCode
-  - reldirs="$(ls /Applications | grep '^Xcode')"
-  - |
-    if [[ -n "$reldirs" ]]; then
-      while read -r subdir; do
-        dir="/Applications/$subdir"
-        echo "Deleting Xcode dir $dir"
-        sudo rm -rf "$dir"
-      done <<< "$reldirs"
-    fi
-  - xcodeclt_path="$(xcode-select --print-path || true)"
-  - echo "Xcode CLT path is $xcodeclt_path"
-  - if [[ -d "$xcodeclt_path" ]]; then echo "Deleting XCode CLT dir $xcodeclt_path"; sudo rm -rf "$xcodeclt_path"; fi
+  #- reldirs="$(ls /Applications | grep '^Xcode')"
+  #- |
+  #  if [[ -n "$reldirs" ]]; then
+  #    while read -r subdir; do
+  #      dir="/Applications/$subdir"
+  #      echo "Deleting Xcode dir $dir"
+  #      sudo rm -rf "$dir"
+  #    done <<< "$reldirs"
+  #  fi
+  #- xcodeclt_path="$(xcode-select --print-path || true)"
+  #- echo "Xcode CLT path is $xcodeclt_path"
+  #- if [[ -d "$xcodeclt_path" ]]; then echo "Deleting XCode CLT dir $xcodeclt_path"; sudo rm -rf "$xcodeclt_path"; fi
 
 install:
   # Get macOS version string.
