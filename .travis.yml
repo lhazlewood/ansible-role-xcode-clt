@@ -13,9 +13,6 @@ matrix:
   - os: osx
     osx_image: xcode8 # os x 10.11 El Capitan
 
-  - os: osx
-    osx_image: xcode6.4 # os x 10.10 Yosemite
-
 # since this role is supposed to install XCode command line tools, we need to remove
 # any existing XCode or Comamnd Line Tools Travis has on the box by default:
 before_install:
@@ -64,7 +61,7 @@ script:
   - "ansible-playbook tests/test.yml"
 
   # Test the playbook's idempotence.
-  - idempotence=$(mktemp 2> /dev/null || mktemp -t tmp)
+  - idempotence=$(mktemp)
   - "ansible-playbook tests/test.yml | tee -a ${idempotence}"
   - >
     tail ${idempotence}
