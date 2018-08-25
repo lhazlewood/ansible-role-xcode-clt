@@ -20,7 +20,9 @@ matrix:
 # any existing XCode or Comamnd Line Tools Travis has on the box by default:
 before_install:
   - if [[ -x /Developer/Library/uninstall-devtools ]]; then sudo /Developer/Library/uninstall-devtools --mode=all; fi
-  - sudo rm -rf /Library/Developer/CommandLineTools
+  - xcodeclt_path="$(xcode-select -p || true)"
+  - echo "Xcode CLT path is $xcodeclt_path"
+  - if [[ -n "$xcodeclt_path" ]]; then sudo rm -rf "$xcodeclt_path"; fi
 
 install:
   # Get macOS version string.
@@ -32,7 +34,7 @@ install:
       sudo easy_install pip
     else
       # See: https://stackoverflow.com/a/49748494/100134
-      curl https://bootstrap.pypa.io/get-pip.py | sudo python
+      curl https://bootstrap.pypa.io/get-pip.py | sudo -H python
     fi
 
   # Install Ansible.
