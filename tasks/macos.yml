@@ -14,7 +14,7 @@
     [ -d "{{ xcode_clt_dir.stdout }}" ] && [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] && [ -f "/usr/include/iconv.h" ]
   register: xcode_clt_installed
   ignore_errors: true
-  when: xcode_clt_dir.stdout != ""
+  when: xcode_clt_dir is defined and xcode_clt_dir.stdout != ""
   changed_when: false
 
 - name: Find XCode Command Line Tools installation package
@@ -41,6 +41,10 @@
   command: softwareupdate -i "{{ xcode_clt_package.stdout }}"
   register: xcode_clt_package
   when: xcode_clt_package is defined and xcode_clt_package.rc == 0
+
+- name: Print xcode_clt_package results
+  debug:
+    msg: "Stdout: {{ xcode_clt_package.stdout_lines }}, Stderr: {{ xcode_clt_package.stderr_lines }}"
 
 - name: Delete Xcode Command Line Tools progress placeholder file
   become: yes

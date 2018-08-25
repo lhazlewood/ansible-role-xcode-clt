@@ -32,7 +32,7 @@ before_install:
     fi
   - xcodeclt_path="$(xcode-select --print-path || true)"
   - echo "Xcode CLT path is $xcodeclt_path"
-  - if [[ -d "$xcodeclt_path" ]]; then echo "Deleting XCode CLT dir $xcodeclt_dir"; sudo rm -rf "$xcodeclt_path"; fi
+  - if [[ -d "$xcodeclt_path" ]]; then echo "Deleting XCode CLT dir $xcodeclt_path"; sudo rm -rf "$xcodeclt_path"; fi
 
 install:
   # Get macOS version string.
