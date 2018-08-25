@@ -2,6 +2,7 @@
 - name: echo 'hello world'
   command: echo "Hello World!"
   register: result
+  changed_when: false
 
 - name: print message
   debug:
