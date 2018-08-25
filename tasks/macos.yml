@@ -8,16 +8,16 @@
   debug:
     var: xcode_clt_clang
 
-#- name: Check Xcode Command Line Tools installation assets
-#  shell: |
-#    [ -z "{{ xcode_clt_dir.stdout }}" ] || ! [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] || ! [ -f "/usr/include/iconv.h" ]
-#  register: xcode_clt_missing
-#  ignore_errors: true
-#  changed_when: false
+- name: Find XCode Command Line Tools installation packages
+  shell: |
+    softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//'
+  register: xcode_clt_packages
+  when: not xcode_clt_clang.stat.exists
+  changed_when: false
 
-#- name: Print xcode_clt_missing
-#  debug:
-#    var: xcode_clt_missing
+- name: Print xcode_clt_packages
+  debug:
+    var: xcode_clt_packages
 
 - name: Find XCode Command Line Tools installation package
   shell: |
