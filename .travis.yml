@@ -1,4 +1,5 @@
 sudo: true
+#language: python
 
 #services:
 #  - docker
@@ -18,7 +19,7 @@ matrix:
 # since this role is supposed to install XCode command line tools, we need to remove
 # any existing XCode or Comamnd Line Tools Travis has on the box by default:
 before_install:
-  - sudo /Developer/Library/uninstall-devtools --mode=all
+  - if [[ -x /Developer/Library/uninstall-devtools ]]; then /Developer/Library/uninstall-devtools --mode=all; fi
   - sudo rm -rf /Library/Developer/CommandLineTools
 
 install:
