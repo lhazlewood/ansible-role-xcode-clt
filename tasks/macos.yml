@@ -19,7 +19,7 @@
 
 - name: Finding XCode Command Line Tools installation package
   shell: |
-    softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | head -n1
+    softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//'
   register: xcode_clt_package
   when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
 
