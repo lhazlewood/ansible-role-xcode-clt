@@ -64,7 +64,7 @@ script:
   - "ansible-playbook tests/test.yml"
 
   # Test the playbook's idempotence.
-  - idempotence=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+  - idempotence=$(mktemp 2> /dev/null || mktemp -t tmp)
   - "ansible-playbook tests/test.yml | tee -a ${idempotence}"
   - >
     tail ${idempotence}
