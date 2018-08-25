@@ -5,7 +5,7 @@
   ignore_errors: true
   changed_when: false
 
-- name: print xcode_clt_dir
+- name: Print xcode_clt_dir
   debug:
     msg: "{{ xcode_clt_dir.stdout }}"
 
@@ -17,30 +17,37 @@
   when: xcode_clt_dir.stdout != ""
   changed_when: false
 
-- name: Finding XCode Command Line Tools installation package
+- name: Find XCode Command Line Tools installation package
   shell: |
     softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | tail -n1
   register: xcode_clt_package
   when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
+  changed_when: false
 
-- name: print message
+- name: Print xcode_clt_package
   debug:
    msg: "{{ xcode_clt_package.stdout_lines }}"
-  when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
+  when: xcode_clt_package is defined
 
-- name: Creating Xcode Command Line Tools progress placeholder file
+- name: Create Xcode Command Line Tools progress placeholder file
   become: yes
   file:
     path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
     state: touch
-  when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
+  when: xcode_clt_package is defined and xcode_clt_package.rc == 0
+
+- name: Install XCode Command Line Tools installation package
+  become: yes
+  command: softwareupdate -i "{{ xcode_clt_package.stdout }}"
+  register: xcode_clt_package
+  when: xcode_clt_package is defined and xcode_clt_package.rc == 0
 
 - name: Delete Xcode Command Line Tools progress placeholder file
   become: yes
   file:
     path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
     state: touch
-  when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
+  when: xcode_clt_package is defined and xcode_clt_package.rc == 0
 
 #- name: print message
 #  debug:
