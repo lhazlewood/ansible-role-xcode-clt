@@ -6,7 +6,7 @@
   changed_when: false
 
 - name: Check Xcode Command Line Tools installation assets
-  shell: "[ -n \"{{ xcode_clt_dir.stdout }}\" ] && [ -f \"{{ xcode_clt_dir.stdout }}/usr/bin/git\" ] && [ -f \"/usr/include/iconv.h\" ]"
+  shell: '[ -n "{{ xcode_clt_dir.stdout }}" ] && [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] && [ -f "/usr/include/iconv.h" ]'
   register: xcode_clt_installed
   ignore_errors: true
   when: xcode_clt_dir.stdout != ""
