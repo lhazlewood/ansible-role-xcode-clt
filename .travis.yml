@@ -20,9 +20,9 @@ matrix:
 # any existing XCode or Comamnd Line Tools Travis has on the box by default:
 before_install:
   - if [[ -x /Developer/Library/uninstall-devtools ]]; then sudo /Developer/Library/uninstall-devtools --mode=all; fi
-  - xcodeclt_path="$(xcode-select -p || true)"
+  - xcodeclt_path="$(xcode-select --print-path || true)"
   - echo "Xcode CLT path is $xcodeclt_path"
-  - if [[ -n "$xcodeclt_path" ]]; then sudo rm -rf "$xcodeclt_path"; fi
+  - if [[ -d "$xcodeclt_path" ]]; then sudo rm -rf "$xcodeclt_path"; fi
 
 install:
   # Get macOS version string.
