@@ -11,17 +11,17 @@
 
 - name: Check Xcode Command Line Tools installation assets
   shell: |
-    [ -d "{{ xcode_clt_dir.stdout }}" ] && [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] && [ -f "/usr/include/iconv.h" ]
-  register: xcode_clt_installed
+    [ -z "{{ xcode_clt_dir.stdout }}" ] || ! [ -f "{{ xcode_clt_dir.stdout }}/usr/bin/git" ] || ! [ -f "/usr/include/iconv.h" ]
+  register: xcode_clt_missing
   ignore_errors: true
-  when: xcode_clt_dir is defined and xcode_clt_dir.stdout != ""
+  when: xcode_clt_dir is defined
   changed_when: false
 
 - name: Find XCode Command Line Tools installation package
   shell: |
     softwareupdate -l | grep -B 1 -E "Command Line (Developer|Tools)" | awk -F"*" '/^ +\*/ {print $2}' | sed 's/^ *//' | tail -n1
   register: xcode_clt_package
-  when: xcode_clt_installed is undefined or xcode_clt_installed.rc != 0
+  when: xcode_clt_missing is defined and xcode_clt_missing.rc == 0
   changed_when: false
 
 - name: Print xcode_clt_package
@@ -45,6 +45,16 @@
 - name: Print xcode_clt_package results
   debug:
     msg: "Stdout: {{ xcode_clt_package.stdout_lines }}, Stderr: {{ xcode_clt_package.stderr_lines }}"
+
+- name: Check if Xcode Command Line Tools directory exists 2
+  command: xcode-select --print-path
+  register: xcode_clt_dir2
+  ignore_errors: true
+  changed_when: false
+
+- name: Print xcode_clt_dir
+  debug:
+    msg: "Stdout: {{ xcode_clt_dir2.stdout }}, Stderr: {{ xcode_clt_dir2.stderr }}"
 
 - name: Delete Xcode Command Line Tools progress placeholder file
   become: yes
