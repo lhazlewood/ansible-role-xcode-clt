@@ -11,6 +11,10 @@
   when: not xcode_clt_clang.stat.exists
   changed_when: false
 
+- name: Print xcode_clt_package results
+  debug:
+    var: xcode_clt_package
+
 - name: Create Xcode Command Line Tools progress placeholder file
   file:
     path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
