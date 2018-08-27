@@ -12,7 +12,6 @@
   changed_when: false
 
 - name: Create Xcode Command Line Tools progress placeholder file
-  become: yes
   file:
     path: /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
     state: touch
@@ -23,3 +22,5 @@
   command: softwareupdate -i "{{ xcode_clt_package.stdout }}"
   register: xcode_clt_installation
   when: xcode_clt_package is not skipped
+  notify:
+    - "Delete Xcode Command Line Tools progress placeholder file"

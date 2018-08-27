@@ -36,7 +36,7 @@ install:
     fi
 
   # Install Ansible.
-  - sudo -H pip install --no-cache-dir --upgrade ansible
+  - sudo -H pip install --no-cache-dir --upgrade ansible==2.6.3
 
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../:../roles:./roles'; } >> ansible.cfg"
