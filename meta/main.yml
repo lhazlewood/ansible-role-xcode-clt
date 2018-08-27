@@ -2,7 +2,7 @@
 galaxy_info:
   author: lhazlewood
   role_name: xcode_clt
-  description: Install Xcode Command Line Tools for macOS >= 10.11
+  description: Install Xcode Command Line Tools for macOS >= 10.10
   license: "license (BSD, MIT)"
   min_ansible_version: 2.2
   platforms:

@@ -13,21 +13,14 @@ matrix:
   - os: osx
     osx_image: xcode8 # os x 10.11 El Capitan
 
+  - os: osx
+    osx_image: xcode6.4 # os x 10.10 Yosemite
+
 # since this role is supposed to install XCode command line tools, we need to remove
-# any existing XCode or Comamnd Line Tools Travis has on the box by default:
+# any existing Comamnd Line Tools Travis has on the box by default:
 before_install:
   - if [[ -x /Developer/Library/uninstall-devtools ]]; then sudo /Developer/Library/uninstall-devtools --mode=all; fi
-  - if [[ -d /Library/Developer/CommandLineTools ]]; then sudo rm -rf /Library/Developer/CommandLineTools; fi;
-  # remove XCode
-  #- reldirs="$(ls /Applications | grep '^Xcode')"
-  #- |
-  #  if [[ -n "$reldirs" ]]; then
-  #    while read -r subdir; do
-  #      dir="/Applications/$subdir"
-  #      echo "Deleting Xcode dir $dir"
-  #      sudo rm -rf "$dir"
-  #    done <<< "$reldirs"
-  #  fi
+  - sudo rm -rf /Library/Developer/CommandLineTools
 
 install:
   # Get macOS version string.
@@ -55,19 +48,19 @@ install:
 
 script:
   # Check the role/playbook's syntax.
-  - "ansible-playbook tests/test.yml --syntax-check"
+  - ansible-playbook tests/test.yml --syntax-check
 
   # Test the playbook.
-  - "ansible-playbook tests/test.yml"
+  - ansible-playbook tests/test.yml
 
   # Test the playbook's idempotence.
-  - idempotence=$(mktemp)
-  - "ansible-playbook tests/test.yml | tee -a ${idempotence}"
+  - idempotence=$(mktemp /private/tmp/XXXXXXXXX)
+  - ansible-playbook tests/test.yml | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-#notifications:
-#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+notifications:
+  webhooks: 'https://galaxy.ansible.com/api/v1/notifications/'
