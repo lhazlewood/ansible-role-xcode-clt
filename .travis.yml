@@ -13,9 +13,6 @@ matrix:
   - os: osx
     osx_image: xcode8 # os x 10.11 El Capitan
 
-  - os: osx
-    osx_image: xcode6.4 # os x 10.10 Yosemite
-
 # since this role is supposed to install XCode command line tools, we need to remove
 # any existing Comamnd Line Tools Travis has on the box by default:
 before_install:

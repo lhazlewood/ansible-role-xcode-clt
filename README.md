@@ -2,7 +2,7 @@
 
 # Ansible Role for Xcode Command Line Tools
 
-Ansible role that installs Xcode Command Line Tools on Mac OS X >= 10.10 (Yosemite, El Capitan, Sierra, High Sierra, etc).
+Ansible role that installs Xcode Command Line Tools on Mac OS X >= 10.11 (El Capitan, Sierra, High Sierra, etc).
 
 This role can be used in any playbook:
 
